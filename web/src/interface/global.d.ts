@@ -1,0 +1,1 @@
+type Timeout = any
