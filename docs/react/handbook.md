@@ -214,6 +214,8 @@ function onRender(
 
 startTransition 或 useDeferredValue 可以让更新避开 Suspense 的重新激活。
 
+利用 Suspense 可以，实现Streaming Render & Selective Hydration，Streaming Render是流式渲染，S 向 C 逐步渲染 HTML；Selective Hydration 选择性水合，React 能根据用户交互情况，优先选择那些组件进行交互。
+
 ## 基础概念
 
 ### 'use client' 和 'use server'
@@ -237,3 +239,69 @@ The Render Tree
 The Module Dependency Tree
 ![The Module Dependency Tree](https://react.dev/_next/image?url=%2Fimages%2Fdocs%2Fdiagrams%2Fmodule_dependency_tree.dark.png&w=750&q=75)
 
+### createPortal
+
+提供一个 DOM 注入 JSX 组件的方法，而并完全在 div#root 内。
+
+使用场景：1. 注入页面已存在 DOM 节点，比如地图 API 小组件 DOM。; 2. 脱离父 class 的控制
+
+```tsx
+<div>
+  <SomeComponent />
+  {createPortal(children, domNode, key?)}
+</div>
+```
+
+### flushSync
+
+强制同步刷新，DOM 会被变更。
+
+> React will immediately call this callback and flush any updates it contains synchronously. It may also flush any pending updates, or Effects, or updates inside of Effects.
+
+### hydrate 和 hydrateRoot （客户端 API）
+React17:hydrate
+React18:hydrateRoot
+
+### render 和 renderRoot （客户端 API）
+React17:render
+React18:renderRoot
+
+### pre*
+```tsx
+// 预解析 DNS 服务器地址
+prefetchDNS("https://example.com");
+// 预解析资源主机服务器地址
+preconnect("https://example.com");
+```
+
+以下 API 可能不需要手动调用，React-based frameworks 会为你处理。
+```tsx
+// 预下载，且执行
+// for stylesheet or external script
+preinit("https://example.com/style.css", {as: "style", precedence: "medium"});
+// for ESM module
+preinitModule("https://example.com/module.js", {as: "script"});
+
+// 预下载，但不执行，保存到缓存中 
+//for xxx. eg：stylesheet, font, or external script 
+preload("https://example.com/font.woff2", {as: "font"});
+// 预下载，但不执行，for ESM module
+preloadModule("https://example.com/module.js", {as: "script"});
+
+```
+### renderToPipeableStream、renderToReadableStream （服务端 API）
+都是流式传输
+
+renderToPipeableStream，renders a React tree to a [**pipeable Node.js Stream**](https://nodejs.org/api/stream.html).
+renderToReadableStream，renders a React tree to a [**Readable Web Stream**](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream).
+
+### renderToStaticMarkup、renderToString （服务端 API）
+都是 render to HTML string
+
+renderToStaticMarkup：for non-interactive App，cannot be hydrated
+renderToString：for interactive App， 然后在客户端上 hydrateRoot 配合水合。
+
+### renderToStaticNodeStream、renderToPipeableStream （服务端 API）
+
+renderToStaticNodeStream：for 非交互式应用，无法水合
+renderToPipeableStream：for 交互式应用，客户端上使用 hydrateRoot 配合水合。

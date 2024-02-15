@@ -1,3 +1,4 @@
+import { syncLongTimeConsumeTask } from "@/tools/tools"
 import { useMemo } from "react"
 
 type SlowListProps = {
@@ -24,10 +25,7 @@ const SlowList =
     }
 
 const SlowItem = ({ title, text }: SlowListProps) => {
-    const startTime = performance.now()
-    while (performance.now() - startTime < 1) {
-        // 模拟 1ms 的长耗时计算
-    }
+    syncLongTimeConsumeTask(1000)
     return <li>
         {title}:{text}
     </li>
