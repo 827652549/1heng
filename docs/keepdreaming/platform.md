@@ -5,3 +5,13 @@ Product Hunt 是一个在线平台，它允许用户分享和发现新的科技�
 https://bestofjs.org/
 
 js 项目的热榜
+
+dribbble.com
+
+设计美感，也包括 web design
+
+https://coolshell.cn/articles/17583.html
+陈皓《技术人员的发展之路》
+
+https://tw93.fun/2024-02-09/tools.html
+年度折腾工具
